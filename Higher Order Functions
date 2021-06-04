@@ -1,0 +1,244 @@
+// THREAD OF EXECUTION
+    //LOCAL MEMORY & 
+// EXECUTION CONTEXT
+const num = 3;
+function multiplyBy2 (inputNumber) {
+   return inputNumber * 2;
+  //LOCATE/LOOK-UP THE THE BLOCK OF MEMORY IN LOCAL STORAGE CONTAINING THE VALUE(EVALUATION) AND RETURN THAT VALUE TO THE THING THAT CALLED IT.
+}
+
+const output = multiplyBy2(num);
+const newOutput = multiplyBy2(10);
+//DECLARE NEWOUTPUT -- INITIATE                             EXECUTION CONTEXT ADDING MULTIPLY BY TO TO THE CALLSTACK EVALUATE 10 * 2                         RETURN VALUE TO FUNCTION AND REMOVE FROM CALL STACK                         RETURN FUNCTION VALUE AND REMOVE FROM CALLSTACK                             ASSIGN IT TO NEWOUTPUT THEN REMOVE IT FROM THE CALL STACK               CONTINUE TO RUN GLOBAL EXECUTION CONTEXT
+output;
+newOutput;
+
+
+  //FIRST IS PARAMETER(PLACEHOLDER)--                          ARGUMENT(INPUT)
+//
+
+function copyArrayAndMultiplyBy2(array) {
+  const output = [];
+  for (let i = 0; i < array.length; i++) {
+    output.push(array[i] * 2);
+  }
+  return output; //return value represented by output
+}
+
+multiplyBy2(7);
+// ^^ stores 7 in variable environment
+// state = live data being stored in local memory or variable environment
+// ex: input = 7
+// when a function is finished runing its local memory is deleted             **except for its returned value
+
+//CLOSURE
+
+// C.O.V.E. 
+// Closed Over Variable Environment
+
+// P.L.S.R.D
+// Persistent                                 Lexically                                 Scoped                                     Reference                                   Data
+
+// 'BackPack'
+
+
+
+function createFunction() {
+  function multiplyBy2(num) {
+    return num * 2;
+  }
+  return multiplyBy2;
+  // the function definition of               multiplyBy2 is saved by                 creatFunction skipping over             createFunction entirely
+}
+
+const generateFunc = createFunction();
+// When accessing a function created by closure a new execution context is created to find the function
+
+// ex: generateFunc = ->[function (num){                          return num*2}                             ]<-
+const result = generateFunc(2);
+
+result;
+ 
+function outer() {
+   let counter = 0;
+  function incrementCounter() {
+    counter ++;
+    console.log(counter)
+  }
+  // CLOSURE is the result of javascript       being a lexically scoped language
+  //The BackPack = P.L.S.R.D            PERSISTANT                       LEXICALY                           SCOPED                           REFERENCE DATA
+  return incrementCounter;
+
+}
+// Individual BackPacks with private         variables and seperate execution           contexts
+const myNewFunc = outer();
+const anotherFunc = outer();
+myNewFunc();
+anotherFunc();
+myNewFunc();
+anotherFunc();
+
+const output2 = multiplyBy2(num);
+const output3 = multiplyBy2(10);
+output2;
+output3;
+
+
+// ASYNCHRONOUS JAVASCRIPT
+ //PROMISES
+  //WEB APIS
+    //.FETCH(data) <pending>                    .THEN(func(data)) <resolved>              .CATCH(func(error)) <rejected>
+
+function display(data) { console.log(data)
+};
+
+function printHello() {
+  console.log('hello');
+};
+
+function blockFor360ms() {
+  //blocking code to occupy callstack
+  console.log('blocking')
+}
+
+setTimeout(printHello, 0);
+// goes to CallBack que waiting for all global code to run, then fo the callstack and microTask que to clear.
+
+const fetchData = fetch('www.twitter.com/will/tweets');
+//fetch data from the internet and return it as a promise object to resolve new Promise() {                        value: someDataFromInternet; <pending>   onSubmit: [.then(function)];             onRejection: [.catch(function)]; <error>       }
+
+//MicroTaskQue
+fetchData.then(display);
+//.then = store function in microTask Que, to run automatically when the backround/web task is complete(promiseResolved) and the value property of the fetch promise has updated with it <resolved>
+
+blockFor360ms();
+// run code to block callstack for 360ms 
+
+console.log('me first!');
+// PushToCallStack
+
+
+
+// OBJECT ORIENTED PROGRAMMING
+  // CLASSES || PROTOTYPES || OBJECTS
+
+
+// CORE OF DEVELOPMENT & PROGRAMMING
+  // Save Data => Run Code w/Data
+  // (OBJECTS) => FUNCTIONS
+
+// Constructor Methods
+
+        // METHOD 1
+// Basic Closure
+
+function userCreator(name, score) {
+    const newUser = {};
+  
+    newUser.name = name;
+    newUser.score = score;
+    
+  newUser.increment = function() {
+    newUser.score++;
+    };
+  return newUser;    
+};
+
+const user1 = userCreator('Will', 10);
+const user2 = userCreator('Json', 2);
+user2.increment();
+
+        //METHOD 2
+
+function userCreator2(name, score) {
+  // Empty Object Binding
+  const newUser = 
+Object.create(userFunctionStore);
+  // Object.create creates an empty           object
+  newUser.name = name;
+  newUser.score = score;
+  return newUser;
+  // Return new Object to global memory
+  // once called by userCreator2
+};
+
+// Object.create(__Proto__)
+// Object.create excepts an object as an argument and attatches it to the empty object as a __Proto__ Chain
+const userFunctionStore = {
+  increment: function() {
+    this.score++;
+    // this = "implicit parameter"
+    },
+  login: function() {
+    console.log('logged in');
+  },
+};
+
+const user3 = userCreator2('Willie', 3);
+const user4 = userCreator2('Tim', 5);
+
+user3.increment();
+user3;
+
+        // METHOD 3
+
+  // The new Keyword
+
+  // FUNCTIONS AS OBJECTS
+
+function userCreator3(name, score) {
+  // this = whatever this block of code       is attached to
+  //.score = whatever this code is attached to + the property(key) of score
+  // = assigns the value of the key/property of whatever input(byType) placed on the right of the operator
+  this.score = score;
+  this.name = name;
+}
+
+// in userCreator4. the dot represents an object in this case(could be array);
+// prototype represents another object      that is attached to the object to the    left that contains properties that       may be used in every instance of the     object
+// increment represents a propery(key) of the prototype object
+// increment is assigned the value of     what ever value the score(input/value)    variable/parameter holds                Then it returns that assignment to the object that called it that value after incrementing it by 1
+userCreator3.prototype.increment = 
+  function() { this.score++};
+userCreator3.prototype.login = function() { console.log('logged in')};
+
+
+// a new variable is created and it is assigned a value equal to the function userCreator, after the parameters are evaluated and a new instance of the function is defined, the new keyword defines this function as an new instance  of userCreator but also attatches the same prototype object with key value pairs that userCreator may have on every instance;
+
+const user5 = new userCreator('eva', 9);
+  
+  
+//user1 = binding/variable 
+//new = declares that whatever function variable follows will be assigned a new instance of that function with the same prototype object as the rest
+// the parenthesis evaluate the            arguemnets then stores the               value/results of those arguments to       global memory
+// the object is then returned to global memory via the new keyword
+
+user1.increment()
+//.increment() is evaluated & run
+// . the dot tells javascript to look for its value inside of the object to the left of it(the one that called it)
+// if not in the function body it will look in the prototype chain
+// when this key/value pair is found it
+// it encounters the this keyword
+// this.score++
+// it searches for the value of this(the object left of the dot that called it) and finds it within its own object... 
+// the function is run returning the         user1.score += 1 & the entire object     saving that to the global memory         before it proceeds in the event         loop/global execution context
+
+// BECAUSE NEW CREATES AN OBJECT             REFERENCE
+// IF THE FUNCTION WAS CALLED WITHOUT THE THIS KEYWORD OR A PROPER CLOSURE ANY THIS KEYWORD USED WOULD BE = TO THE WINDOW OBJECT 
+
+
+        //METHOD 4
+        //CLASSES
+
+class UserCreator {
+  constructor(name, score) {
+    this.name = name;
+    this.score = score;
+  }
+  increment() { this.score++};
+  login() {console.log('logged in')}
+}
+
+const user6 = 
+      new UserCreator('eve', 10);
+
