@@ -1,0 +1,262 @@
+        // DEEP FOUNDATIONS
+// RULES FOR A SUCCESSFUL CAREER
+ /* 
+   If you don't hide your variables someone else will use or mis-use then
+   "You should default to keeping everything private or ATLEAST exposing them minimally"
+  
+  Never use anonymous functions... including IIFEs
+
+*/
+
+          //IIFE
+
+// IIFE - Immediately Invoked Function          Method for turning functions or          anything into an expression
+      
+// Try Catch is a statement and doesn't work in a expression position
+
+// IIFEs allow you to make statements       into expressions evaluating on the       spot
+
+          //CLOSURE
+
+// What is?
+// "When a function remembers its           lexical scope even when that             function is excecuted outside of its     lexical scope"--BackPackBackPack
+// "Preserving Access To Values"
+// "To 'close over' multiple values you     need to create multiple variables to     access them"
+
+        //MODULES
+
+
+        //PATTERNS                         --Namespace Pattern                    "Taking functions and storing them as properties of objects instead of variables"
+ var workshop = {
+      teacher: "Kyle",
+      ask(question) {
+      console.log(this.teacher,question);
+      },
+};
+
+workshop.ask("Is this a module");//                                                 --Module Pattern                 (revealing module pattern)                "Requires encapsulation 'hiding a variable in data'"                        "You can't have a module if you don't     have closure"                          "Purposed to track state over time"
+ASK = 'Q'
+var workshop2 = (function Module(teacher) {
+  var publicAPI = { ASK, };
+  return publicAPI;                     // ---------------------
+  function ask(question) {
+    console.log(teacher,question);
+  }
+})('Kyle');
+
+workshop.ask("It's a module, right?")
+
+// Being called as an IIFE the module is     ran once and the function is done       however it still has returned a         variable in the form of a closure
+
+
+        //MODULE EXERCISE
+var deepJS = defineWorkshop();
+
+deepJS.addStudent(313,'Frank', true);
+deepJS.addStudent(410,'Suzy', true);
+deepJS.addStudent(709,'Brian', false);
+deepJS.addStudent(105,'Henry', false);
+deepJS.addStudent(502,'Mary', true);
+deepJS.addStudent(664,'Bob', false);
+deepJS.addStudent(250,'Peter', true);
+deepJS.addStudent(375,'Sarah', true);
+deepJS.addStudent(867,'Greg', false);
+
+deepJS.enrollStudent(410);
+deepJS.enrollStudent(105);
+deepJS.enrollStudent(664);
+deepJS.enrollStudent(374);
+
+deepJS.printCurrentEnrollment();
+//console.log('-___________-');
+deepJS.enrollPaidStudents();
+//console.log('-____________-');
+//deepJS.remindUnpaidStudents(currentEnrollment);
+
+var currentEnrollment = 
+    [ 410, 105, 664, 374];
+
+var studentRecords = [
+{ id: 313, name: 'Frank', paid: true,},
+{ id: 410, name: 'Suzy', paid: true,},
+{ id: 709, name: 'Brian', paid: false,},
+{ id: 105, name: 'Henry', paid: false,},
+{ id: 664, name: 'Mary', paid: true,},
+{ id: 250, name: 'Bob', paid: false,},
+{ id: 375, name: 'Peter', paid: true,},
+{ id: 867, name: 'Sarah', paid: true,},
+{ id: 313, name: 'Greg', paid: false,},
+];
+
+
+function defineWorkshop() {
+    var currentEnrollment = [];
+    var studentRecords = [];
+  
+    var publicAPI = {
+      addStudent,
+      enrollStudent,
+      printCurrentEnrollment,
+      enrollPaidStudents,
+      //remindUnpaidStudents
+    };
+    return publicAPI;
+  
+  //--------------------------
+  function addStudent(id,name,paid) {
+     studentRecords.push
+     ({ id, name, paid});
+  }
+  
+  function enrollStudent(id) {
+    if (!currentEnrollment.includes(id)){
+      currentEnrollment.push(id);
+    }
+  }
+  
+  function printCurrentEnrollment() {
+    printRecords = () => {     console.log(currentEnrollment);}
+  }
+  
+  function enrollPaidStudents() {
+      
+currentEnrollment  =     //paidStudentsToEnroll();
+printRecords = () => {console.log(currentEnrollment)};
+  }
+  
+  //function remindUnpaidStudents() {
+ //   remindUnpaid(currentEnrollment)
+//}
+  
+  function getStudentFromId(student){
+    
+  }
+}
+
+
+          //OBJECTS OVERVIEW
+
+// "A function's this references the     execution context for that call, determined entirely by how the function was called"
+
+// "A this-aware function can thus have a different context each time it's called. Which makes it more flexible and reusable"
+
+
+       //This(Binding) Overview
+
+// Dynamic Binding -> sharing
+
+// this is Determined at run-time which makes it     flexible yet unpredictable
+
+// one method attatched to different         instances/refrences/bindings
+
+function ask(question) {
+  console.log(this.teacher, question);
+}
+
+var workshop3 = {
+    teacher: 'Kyle',
+    ask: ask,
+};
+
+var workshop4 = {
+    teacher: 'Suzy',
+    ask: ask,
+}
+
+workshop3.ask('How do I share methods?');
+
+workshop4.ask('How do I share methods?')
+
+// Explicit Binding -> .call(method)
+
+  // Here the .call(reference, parameter) explicitly accepts the reference for the parameter passed, so when ask.call is invoked with .call this is set to whatever the reference parameter refers back to
+      // ex: setTimeout is defined to run cb.Call(window, time, funcToRun)
+          //removing any this                       assignments for the window
+//this is resolved in the example by explicitly binding a referernce with .bind which will then correspond with our this aware function
+    // ex: workshop.ask.bind('this'.workshop);
+
+function askAgain(question) {
+   console.log(this.teacher,question);
+}
+  
+var workshop5 = {
+  teacher: 'Kyle',
+};
+
+var workshop6 = {
+  teacher: 'Suzy',
+}
+
+ask.call
+(workshop5, 
+ "Can I explicitly set context?")
+
+ask.call
+(workshop6, 
+"Can I explicitly set context?")
+
+
+// Hard Binding
+
+setTimeout(workshop.ask, 10, "Lost this?");
+setTimeout(workshop.ask.bind(workshop5),
+10, 'Hard bound this?');
+
+// new Binding -> Constructor calls
+// Here new does 4 things               -Create a brand new empty object     -    -Link that object to another object      -Call fn with this set to the new object  -If fn doesn't return an object it assumes you ment to return a this keyword
+
+var newEmptyObject = new ask
+('What is \'new\' doing here?');
+  
+
+
+     // ITERATORS & GENERATORS
+
+/*
+the spread operator & for of method looks for a 
+[symbol.iterator];
+function that returns .next. and automatically runs that to create a desires result.
+/*
+
+[symbol.iterator] : function () {
+    var keys = this.object.keys
+    var index = 0;
+    return {
+  next: () => {
+    (index < keys.length) ? 
+  { done: false, value: this[keys[index++]]}: 
+  { done: true, value: undefined };
+    };
+  };
+  
+  This object can now be spread or iterated over because it will find a 
+  [symbol.iterator] function
+  
+1) the [symbol.iterator] fn defines the length of the object by using object.keys which returns an array of all off the properties as well as an index of 0.
+(this is used to refer lexically to the object that called whatever method used)
+(these values will be saved via 
+C.O.V.E/BackPack/closed over variable environment and also be accessable where-ever the object is called)
+
+2) These values are then used to return a object with next function... because the next function is the return value.. it can be called whenever the symbol.iterator value is called to run by ... or for of. 
+
+3) When the next(fn) is called it checks to see if the index has iterated over every object and if not it returns a another object that says 
+done: false (meaning there are more items) 
+and 
+value: this[keys[index++]]
+
+this refers to the object within its lexical scope that called it.
+
+keys represents the property[with a value of index]
+++ means to increment the index value after it is returned
+
+obj = {
+   a: 1,
+   b: 2,
+   c: 3,
+}
+
+obj.keys => [a, b, c]
+
+this[keys[index++]] => obj[a[0]];
+
+object.a[]
